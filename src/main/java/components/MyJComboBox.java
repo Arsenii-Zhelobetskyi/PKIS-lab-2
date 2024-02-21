@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 public class MyJComboBox extends JComboBox {
     Object[]data;
-    public MyJComboBox(int num, Function<Integer, Integer> method, MyJTable table, int... sizes) {
+    public MyJComboBox(int num, Function<Integer, Integer> method, MyJTable table, JList rowheader, int... sizes) {
         super();
 
         for (int i = 0; i <= num; i++) {
@@ -38,7 +38,7 @@ public class MyJComboBox extends JComboBox {
             table.newModel();
             table.revalidate();
             table.repaint();
-
+            rowheader.repaint();
         });
     }
 }
