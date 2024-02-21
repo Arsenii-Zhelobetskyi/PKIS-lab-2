@@ -2,13 +2,17 @@ package components;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import java.awt.*;
 
 public class MyJTable extends JTable {
    public static Object[] columns ={1,2,3,4,5};
-    static Object[] rows ={1,2,3,4,5};
+   public static Object[] rows ={1,2,3,4,5};
 
     Object[][] data;
     public MyJTable() {
+
+
         data = new Object[rows.length][columns.length];
         for (int i = 0; i < rows.length; i++) {
             for (int j = 0; j < columns.length; j++) {
