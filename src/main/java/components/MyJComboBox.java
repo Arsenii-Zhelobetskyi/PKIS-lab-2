@@ -1,44 +1,45 @@
 package components;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener; // Import ActionListener from java.awt.event
-import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class MyJComboBox extends JComboBox {
-    Object[]data;
-    public MyJComboBox(int num, Function<Integer, Integer> method, MyJTable table, JList rowheader, int... sizes) {
-        super();
 
-        for (int i = 0; i <= num; i++) {
+/**
+ * Клас, який виконує функцію комбобоксу
+ */
+public class MyJComboBox extends JComboBox {
+
+    /**
+     * Конструктор класу компоненту
+     *
+     * @param rowColumnNumber  кількість рядків/стовпців
+     * @param rowColumnUpdater метод який буде змінювати кількість рядків/стовпців. Для рядку це метод setRows, для стовпця setColumns
+     * @param table            таблиця
+     * @param rowHeader        вертикальний хедер, який відображається зліва від таблиці. Тут він потрібен, щоб вчасно оновити його
+     * @param sizes            розміри комбобоксу
+     */
+    public MyJComboBox(int rowColumnNumber, Function<Integer, Integer> rowColumnUpdater, MyJTable table, JList rowHeader, int... sizes) {
+        super();
+        for (int i = 0; i <= rowColumnNumber; i++) { // заповнюємо комбобокс від 0 до rowColumnNumber
             this.addItem(i);
         }
-        this.setSelectedItem(5);
+        this.setSelectedItem(5); // значення за замовчуванням
         this.setBounds(sizes[0], sizes[1], sizes[2], sizes[3]);
 
 
-
-        // Add ActionListener to listen for selection changes
+        /*
+         * Додаємо слухача на зміну вибору
+         */
         this.addActionListener(e -> {
-            // Perform actions when selection changes
-            JComboBox comboBox = (JComboBox) e.getSource();
-            int selectedValue =(int) comboBox.getSelectedItem();
+            JComboBox comboBox = (JComboBox) e.getSource(); // отримуємо того хто викликав подію
+            int selectedValue = (int) comboBox.getSelectedItem(); // отримуємо вибране значення
 
-//            setData.accept(selectedValue);
-//            data = new Object[selectedValue];
-//            for (int i = 0; i < selectedValue; i++) {
-//                data[i] = i+1;
-//                System.out.println(data[i]);
-//            }
-            System.out.println("Selected: " + selectedValue);
+            rowColumnUpdater.apply(selectedValue); // викликаємо метод, який змінює розмір та зміст масиву рядків/стовпців
+            table.newModel(); // оновлюємо вміст таблиці
 
-//            table.setColumns(selectedValue);
-            method.apply(selectedValue);
-            table.newModel();
-            table.revalidate();
+            table.revalidate(); // оновлюємо таблицю
             table.repaint();
-            rowheader.repaint();
+            rowHeader.repaint(); // оновлюємо вертикальний хедер
         });
     }
 }

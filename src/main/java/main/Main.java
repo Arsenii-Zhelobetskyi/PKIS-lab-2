@@ -1,99 +1,42 @@
 package main;
 
 
-import components.MyJComboBox;
-import components.MyJLabel;
-import components.MyJTable;
-//import components.RowRenderer;
-
+import components.*;
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.xml.crypto.Data;
-import java.awt.*;
-import java.util.function.Function;
 
 public class Main {
+
+    /**
+     * Клас, який виконує функцію додатку
+     */
     public static class MyApp extends JFrame {
 
-
-        MyJTable table;
-
+        final int COLUMNS_NUMBER= 1000;
+        final int ROWS_NUMBER= 1000;
 
         public MyApp() {
             this.setTitle("Таблиця множення");
+            MyJTable table = new MyJTable();
             this.setSize(600, 600);
             this.setLayout(null);
 
-
-            table = new MyJTable();
-            ListModel lm = new AbstractListModel() {
-
-
-                @Override
-                public int getSize() {
-                    return table.rows.length;
-                }
-
-                @Override
-                public Object getElementAt(int i) {
-                    return table.rows[i];
-                }
-            };
-            DefaultTableModel dm = new DefaultTableModel(lm.getSize(), 5);
-            JList rowHeader = new JList(lm);
-            rowHeader.setFixedCellWidth(50);
-            rowHeader.setBackground(table.getTableHeader().getBackground());
-            rowHeader.setFixedCellHeight(table.getRowHeight());
-            rowHeader.setCellRenderer(new RowRenderer(table));
-
-
-            this.add(new MyJLabel("Множник", JLabel.CENTER, 200, 100, 100, 50));
-            this.add(new MyJLabel("Множене", JLabel.CENTER, 200, 150, 100, 50));
-            this.add(new MyJComboBox(100, MyJTable::setColumns, table,rowHeader, 300, 115, 100, 25));
-            this.add(new MyJComboBox(100, MyJTable::setRows, table,rowHeader, 300, 165, 100, 25));
-
-
-            JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-            scroll.setBounds(50, 200, 500, 300);
-            scroll.setRowHeaderView(rowHeader);
-
-            this.add(scroll);
-
+            // створюємо та розташовуємо усі компоненти в додатку
+            MyRowHeader rowHeader = new MyRowHeader(table);
+            this.add(new MyJLabel("Множник:", JLabel.CENTER, 200, 50, 100, 50));
+            this.add(new MyJLabel("Множене:", JLabel.CENTER, 200, 100, 100, 50));
+            this.add(new MyJLabel("Таблиця множення:", JLabel.CENTER, 200, 150, 150, 50));
+            this.add(new MyJComboBox(COLUMNS_NUMBER, MyJTable::setColumns, table, rowHeader.getList(), 300, 65, 100, 25));
+            this.add(new MyJComboBox(ROWS_NUMBER, MyJTable::setRows, table, rowHeader.getList(), 300, 115, 100, 25));
+            this.add(new MyJScrollPane(table, rowHeader,0, 200, 585, 360));
 
             this.setVisible(true);
             this.setResizable(false);
-
-
         }
 
-        class RowRenderer extends JLabel implements ListCellRenderer {
-            RowRenderer(JTable table) {
-                JTableHeader header = table.getTableHeader();
-                setOpaque(true);
-                setBorder(UIManager.getBorder("TableHeader.cellBorder"));
-                setHorizontalAlignment(CENTER);
-                setForeground(header.getForeground());
-                setBackground(header.getBackground());
-                setFont(header.getFont());
-            }
-
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                setText((value == null) ? "" : value.toString());
-
-                return this;
-            }
-
-        }
     }
 
-
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(MyApp::new);
-
+        SwingUtilities.invokeLater(MyApp::new); // створюємо та запускаємо додаток
     }
 }
 
