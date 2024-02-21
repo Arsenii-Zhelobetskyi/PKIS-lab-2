@@ -20,6 +20,8 @@ public class MyJTable extends JTable {
             }
         }
 
+
+
         DefaultTableModel model = new DefaultTableModel(data, columns);
         this.setModel(model);
 //        super(data,columns);

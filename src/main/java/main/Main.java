@@ -31,6 +31,8 @@ public class Main {
             table = new MyJTable();
             ListModel lm = new AbstractListModel() {
 
+
+
                 @Override
                 public int getSize() {
                     return table.rows.length;
@@ -44,6 +46,7 @@ public class Main {
             DefaultTableModel dm = new DefaultTableModel(lm.getSize(),5);
             JList rowHeader = new JList(lm);
             rowHeader.setFixedCellWidth(50);
+            rowHeader.setBackground(table.getTableHeader().getBackground());
             rowHeader.setFixedCellHeight(table.getRowHeight());
             rowHeader.setCellRenderer(new RowRenderer(table));
             this.add(new MyJLabel("Множник", JLabel.CENTER, 200, 100, 100, 50));
@@ -55,6 +58,8 @@ public class Main {
             JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             scroll.setBounds(50, 200, 500, 300);
             scroll.setRowHeaderView(rowHeader);
+//            scroll.setBackground(Color.WHITE);
+//            scroll.getViewport().setBackground(Color.WHITE);
             this.add(scroll);
 
 
@@ -62,6 +67,9 @@ public class Main {
             this.setResizable(false);
 
 
+//            JTableHeader header =  rowHeader.getTableHeader();
+//            header.setBackground(Color.WHITE);
+//            header.getParent().setBackground(Color.WHITE);
 
 
         }
@@ -74,20 +82,16 @@ public class Main {
                 setHorizontalAlignment(CENTER);
                 setForeground(header.getForeground());
                 setBackground(header.getBackground());
+                System.out.println(header.getBackground());
                 setFont(header.getFont());
             }
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 setText((value == null) ? "" : value.toString());
+
                 return this;
             }
-            @Override
-            protected void paintComponent(Graphics g) {
-                // Set transparent background
-                g.setColor(new Color(255, 255, 255, 100)); // White color with alpha value 100
-                g.fillRect(0, 0, getWidth(), getHeight());
-                super.paintComponent(g);
-            }
+
         }
     }
 
